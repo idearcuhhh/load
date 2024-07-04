@@ -1,6 +1,6 @@
 _G.kb = true
 _G.ch = true
-
+_G.pn = true
 
 spawn(function()
     while _G.kb == true do
@@ -52,5 +52,23 @@ spawn(function()
         
         game:GetService("ReplicatedStorage").Package.Events.cha:InvokeServer(unpack(args))
         wait(0.001)
+    end
+end)
+spawn(function ()
+    while _G.pn == true do
+        local args = {
+            [1] = "Blacknwhite27",
+            [2] = 1
+        }
+        
+        game:GetService("ReplicatedStorage").Package.Events.p:FireServer(unpack(args))
+
+        local args = {
+            [1] = "Blacknwhite27",
+            [2] = 2
+        }
+        
+        game:GetService("ReplicatedStorage").Package.Events.p:FireServer(unpack(args))
+        wait(0.1)
     end
 end)
