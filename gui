@@ -1,0 +1,126 @@
+-- Use 
+
+-- Create a ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "RoundedGui"
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create the original Frame
+local frame = Instance.new("Frame")
+frame.AnchorPoint = Vector2.new(0.5, 0.5)
+frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+frame.Size = UDim2.new(0, 544, 0, 309)
+frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+frame.BackgroundTransparency = 0.5
+frame.Parent = screenGui
+
+-- Create a UICorner to round the edges of the original Frame
+local frameCorner = Instance.new("UICorner")
+frameCorner.CornerRadius = UDim.new(0, 12) -- Adjust the second parameter for the corner radius size
+frameCorner.Parent = frame
+
+-- Optional: Customize the original Frame further (e.g., add a background color)
+frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Example color
+
+-- Get the local player's username and display name
+local player = game.Players.LocalPlayer
+local playerName = player.Name
+local displayName = player.DisplayName
+
+-- Function to create a TextLabel with rounded corners and an outline
+local function createTextLabel(parent, position, size, text)
+	local textLabel = Instance.new("TextLabel")
+	textLabel.Position = position
+	textLabel.Size = size
+	textLabel.BackgroundTransparency = 0.7 -- Set background transparency to 0.7 for visibility
+	textLabel.Text = text
+	textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+	textLabel.TextTransparency = 0 -- Set text transparency to 0 (fully opaque)
+	textLabel.Font = Enum.Font.SourceSans
+	textLabel.TextScaled = true
+	textLabel.BorderSizePixel = 2 -- Set the border size to make the outline visible
+	textLabel.BorderColor3 = Color3.fromRGB(255, 255, 255) -- Set the border color to white
+	textLabel.Parent = parent
+
+	-- Create a UICorner for rounded corners
+	local textCorner = Instance.new("UICorner")
+	textCorner.CornerRadius = UDim.new(0, 12) -- Adjust the second parameter for the corner radius size
+	textCorner.Parent = textLabel
+
+	return textLabel
+end
+
+-- Function to create a TextButton with rounded corners and an outline
+local function createTextButton(parent, position, size, text, onClick)
+	local textButton = Instance.new("TextButton")
+	textButton.Position = position
+	textButton.Size = size
+	textButton.BackgroundTransparency = 0.7 -- Set background transparency to 0.7 for visibility
+	textButton.Text = text
+	textButton.TextColor3 = Color3.fromRGB(255, 66, 85) -- Dark red/mahogany hybrid color
+	textButton.TextTransparency = 0 -- Set text transparency to 0 (fully opaque)
+	textButton.Font = Enum.Font.SourceSans
+	textButton.TextScaled = true
+	textButton.BorderSizePixel = 2 -- Set the border size to make the outline visible
+	textButton.BorderColor3 = Color3.fromRGB(255, 255, 255) -- Set the border color to white
+	textButton.Parent = parent
+
+	-- Create a UICorner for rounded corners
+	local buttonCorner = Instance.new("UICorner")
+	buttonCorner.CornerRadius = UDim.new(0, 12) -- Adjust the second parameter for the corner radius size
+	buttonCorner.Parent = textButton
+
+	-- Connect the button click event
+	textButton.MouseButton1Click:Connect(onClick)
+
+	return textButton
+end
+
+-- Create a text label to show the player's username and display name
+local textLabel = createTextLabel(frame, UDim2.new(0.035, 0, 0.055, 0), UDim2.new(0, 249, 0, 96), playerName .. " (" .. displayName .. ")")
+
+-- Create a text label to show the player's ping
+local pingLabel = createTextLabel(frame, UDim2.new(0.417, 0, 0.417, 0), UDim2.new(0, 117, 0, 50), "Ping: 0")
+
+-- Create a text label to show the player's FPS
+local fpsLabel = createTextLabel(frame, UDim2.new(0.035, 0, 0.417, 0), UDim2.new(0, 200, 0, 50), "FPS: 0")
+
+-- Create a text label to show "Statistics"
+local statsLabel = createTextLabel(frame, UDim2.new(0.035, 0, 0.738, 0), UDim2.new(0, 504, 0, 50), "Statistics")
+
+-- Create a text button to "KillGui"
+local killGuiButton = createTextButton(frame, UDim2.new(0.647, 0, 0.417, 0), UDim2.new(0, 171, 0, 50), "KillGui", function()
+	screenGui:Destroy() -- Destroy the ScreenGui to remove the entire GUI
+end)
+
+-- Function to determine the color based on FPS
+local function getFpsColor(fps)
+	if fps <= 19 then
+		return Color3.fromRGB(87, 15, 32) -- Dark Red
+	elseif fps <= 45 then
+		return Color3.fromRGB(206, 212, 38) -- Yellow
+	else
+		return Color3.fromRGB(72, 207, 86) -- Green
+	end
+end
+
+-- Function to update the ping and FPS labels
+local function updateLabels()
+	while true do
+		-- Simulate ping value (replace this with actual ping calculation if available)
+		local ping = math.random(50, 200) -- Random value for demonstration
+		pingLabel.Text = "Ping: " .. ping
+
+		-- Simulate FPS value (replace this with actual FPS calculation if available)
+		local fps = math.random(30, 60) -- Random value for demonstration
+		fpsLabel.Text = "FPS: " .. fps
+
+		-- Update the text stroke color based on FPS
+		fpsLabel.TextStrokeColor3 = getFpsColor(fps)
+
+		wait(0.5) -- Update every 0.5 seconds
+	end
+end
+
+-- Start updating the labels
+updateLabels()
